@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(join(__dirname, 'public')));
 
-ConnectDb()
+ConnectDb();
 app.use('/api', ProjectRoutes);
 app.use('*', Errorhandler);
 
