@@ -3,7 +3,7 @@ import { model, Schema } from "mongoose";
 export interface IProjects {
   name: string,
   description: string,
-  progress: number,
+  progress?: number,
   target: string,
   task: (unknown)[],
   createdAt?: Date,
@@ -18,7 +18,7 @@ const Projects = model('projects', new Schema<IProjects>({
   },
   description: {
     type: String, 
-    minlength: 20,
+    minlength: 2,
     maxlength: 40,
     required: true,
   },
@@ -26,7 +26,6 @@ const Projects = model('projects', new Schema<IProjects>({
     type: Number, 
     min: 0,
     max: 100,
-    required: true,
   },
   target: {
     type: String,

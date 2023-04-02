@@ -5,6 +5,7 @@ function Errorhandler(err, req, res, next) {
     console.log('-> ', {
         name: err.name,
         msg: err.message,
+        stack: err.stack,
     });
     res.status(500).json({ error: err.message });
 }

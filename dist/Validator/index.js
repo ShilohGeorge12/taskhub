@@ -8,8 +8,8 @@ const joi_1 = __importDefault(require("joi"));
 function validateProjects(schema) {
     const joiSchema = joi_1.default.object({
         name: joi_1.default.string().min(2).required(),
-        description: joi_1.default.string().min(20).max(20).required(),
-        progress: joi_1.default.number().min(0).max(100).required(),
+        description: joi_1.default.string().min(2).max(40).required(),
+        progress: joi_1.default.number().min(0).max(100),
         target: joi_1.default.string().min(1).required(),
         task: joi_1.default.array().required()
     });

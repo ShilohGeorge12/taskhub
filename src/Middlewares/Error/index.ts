@@ -6,6 +6,7 @@ export function Errorhandler(err: Error, req: Request, res: Response, next: Next
   console.log('-> ', {
     name: err.name,
     msg: err.message,
+    stack: err.stack,
   });
   res.status(500).json({ error: err.message })
 };

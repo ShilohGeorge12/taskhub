@@ -10,7 +10,7 @@ const Projects = (0, mongoose_1.model)('projects', new mongoose_1.Schema({
     },
     description: {
         type: String,
-        minlength: 20,
+        minlength: 2,
         maxlength: 40,
         required: true,
     },
@@ -18,7 +18,6 @@ const Projects = (0, mongoose_1.model)('projects', new mongoose_1.Schema({
         type: Number,
         min: 0,
         max: 100,
-        required: true,
     },
     target: {
         type: String,
