@@ -9,8 +9,8 @@ authRoute.get('/genkey', (0, index_1.tryCatch)(async (req, res) => {
     res.cookie('key', key, {
         httpOnly: true,
         maxAge: index_2.expTime,
-        secure: true,
-        sameSite: 'strict',
+        // secure: true,
+        // sameSite: 'strict',
     });
     res.status(200).json({ key });
 }));
