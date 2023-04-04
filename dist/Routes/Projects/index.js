@@ -56,8 +56,14 @@ ProjectRoutes.put('/projects/:id', index_4.default, (0, index_2.tryCatch)(async 
     }
 }));
 ProjectRoutes.delete('/projects/:id', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
-    const project = await index_1.default.findByIdAndRemove({ _id: req.params.id });
-    console.log(project);
-    res.status(200).json({ message: 'Project Deleted!' });
+    const isProject = await index_1.default.exists({ _id: req.params.id });
+    if (isProject) {
+        const project = await index_1.default.findByIdAndRemove({ _id: req.params.id });
+        console.log(project);
+        res.status(200).json({ message: 'Project Deleted!' });
+    }
+    else {
+        res.status(400).json({ error: "Project Not found!" });
+    }
 }));
 exports.default = ProjectRoutes;
