@@ -56,13 +56,12 @@ ProjectRoutes.put( '/projects/:id', validateRoute, tryCatch( async(req,res) => {
 ProjectRoutes.delete( '/projects/:id', validateRoute , tryCatch( async(req,res) => {
   const isProject = await Projects.exists({ _id: req.params.id });
   if(isProject){
-
     const project = await Projects.findByIdAndRemove({ _id:req.params.id });
     console.log( project );
     res.status(200).json({ message: 'Project Deleted!' });
   }else{
     res.status(400).json({ error: "Project Not found!" });
-  }
+  };
 }))
 
 export default ProjectRoutes;

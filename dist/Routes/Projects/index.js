@@ -65,5 +65,6 @@ ProjectRoutes.delete('/projects/:id', index_4.default, (0, index_2.tryCatch)(asy
     else {
         res.status(400).json({ error: "Project Not found!" });
     }
+    ;
 }));
 exports.default = ProjectRoutes;
