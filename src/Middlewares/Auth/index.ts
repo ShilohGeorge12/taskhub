@@ -3,25 +3,6 @@ import { config } from 'dotenv';
 config();
 import { Request, Response, NextFunction } from 'express';
 
-const time: string = '1h';
-const toMiliSeconds = (time: string) => {
-  const t = time.split('h')[0];
-  const toHour =  60 * 60 * 1000;
-  const toMin =  60 * 1000;
-  const secs = parseInt(t) * toMin;
-  return secs;
-};
-export const expTime = toMiliSeconds(time);
-
-export function genKey(){
-  const key = jwt.sign({}, `${process.env.key}`);
-  return key;
-};
-
-function auth(){
-  return jwt.sign({}, `${process.env.auth}`);
-}
-// console.log(auth())
 export const errorResponse = { error: 'You are Not allowed!' };
 
 function validateRoute( req:Request, res:Response, next:NextFunction ){

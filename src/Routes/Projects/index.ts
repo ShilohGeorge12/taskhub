@@ -31,4 +31,9 @@ ProjectRoutes.post('/projects', validateRoute, tryCatch( async( req,res ) => {
   }
 }))
 
+ProjectRoutes.put( '/projects/:id', validateRoute, tryCatch( async(req,res) => {
+  const { error } = validateProjects( req.body );
+
+}))
+
 export default ProjectRoutes;

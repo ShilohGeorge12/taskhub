@@ -33,4 +33,7 @@ ProjectRoutes.post('/projects', index_4.default, (0, index_2.tryCatch)(async (re
         res.status(200).json(addProject);
     }
 }));
+ProjectRoutes.put('/projects/:id', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
+    const { error } = (0, index_3.validateProjects)(req.body);
+}));
 exports.default = ProjectRoutes;
