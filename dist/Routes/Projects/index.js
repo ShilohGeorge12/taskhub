@@ -35,5 +35,29 @@ ProjectRoutes.post('/projects', index_4.default, (0, index_2.tryCatch)(async (re
 }));
 ProjectRoutes.put('/projects/:id', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
     const { error } = (0, index_3.validateProjects)(req.body);
+    const updateProjects = await index_1.default.findOne({ _id: req.params.id }).select('_id name description progress target task createdAt');
+    if (error) {
+        console.log(error);
+        const errArr = [];
+        error.details.map(err => errArr.push(err.message));
+        res.status(400).json({ error: errArr });
+    }
+    else if (updateProjects) {
+        updateProjects.name = await req.body.name;
+        updateProjects.description = await req.body.description;
+        updateProjects.progress = await req.body.progress;
+        updateProjects.target = await req.body.target;
+        updateProjects.task = await req.body.task;
+        await updateProjects.save();
+        res.status(200).json(updateProjects);
+    }
+    else {
+        res.status(200).json({ error: "Project Not Found!" });
+    }
+}));
+ProjectRoutes.delete('/projects/:id', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
+    const project = await index_1.default.findByIdAndRemove({ _id: req.params.id });
+    console.log(project);
+    res.status(200).json({ message: 'Project Deleted!' });
 }));
 exports.default = ProjectRoutes;
