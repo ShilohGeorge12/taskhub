@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.genKey = exports.expTime = void 0;
+exports.errorResponse = exports.genKey = exports.expTime = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
@@ -17,29 +17,28 @@ const toMiliSeconds = (time) => {
 };
 exports.expTime = toMiliSeconds(time);
 function genKey() {
-    const key = jsonwebtoken_1.default.sign({}, `${process.env.key}`, {
-        expiresIn: time,
-    });
+    const key = jsonwebtoken_1.default.sign({}, `${process.env.key}`);
     return key;
 }
 exports.genKey = genKey;
 ;
+function auth() {
+    return jsonwebtoken_1.default.sign({}, `${process.env.auth}`);
+}
+// console.log(auth())
+exports.errorResponse = { error: 'You are Not allowed!' };
 function validateRoute(req, res, next) {
-    const key = req.cookies.key;
-    const hKey = req.headers['x-api-key'];
-    if (typeof key === 'string' && typeof hKey === 'string') {
-        if (key === hKey) {
-            const verify = jsonwebtoken_1.default.verify(key, `${process.env.key}`);
-            if (verify) {
-                next();
-            }
-            else {
-                res.status(401).json({ error: 'You are Not allowed!' });
-            }
-        }
+    const Keyref = `${process.env.refKey}`;
+    const Authref = `${process.env.refAuth}`;
+    const reqKey = req.headers['x-api-key'];
+    const auth = req.headers.authorization;
+    if (reqKey === Keyref && auth === Authref) {
+        jsonwebtoken_1.default.verify(reqKey, `${process.env.key}`);
+        jsonwebtoken_1.default.verify(auth, `${process.env.auth}`);
+        next();
     }
     else {
-        res.status(401).json({ error: 'You are Not allowed!' });
+        res.status(401).json(exports.errorResponse);
     }
 }
 exports.default = validateRoute;

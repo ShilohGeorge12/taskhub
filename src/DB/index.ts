@@ -8,7 +8,7 @@ function ConnectDb(): void {
     mongoose.set('strictQuery', false);
     mongoose.connect(connectKey);
   } catch (error) {
-    console.warn(error)
+    console.warn(error, 'DataBase Connection Error!')
   }
 }
 export default ConnectDb;

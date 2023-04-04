@@ -14,28 +14,28 @@ const toMiliSeconds = (time: string) => {
 export const expTime = toMiliSeconds(time);
 
 export function genKey(){
-  const key = jwt.sign({}, `${process.env.key}`, {
-    expiresIn: time,
-  })
+  const key = jwt.sign({}, `${process.env.key}`);
   return key;
 };
 
+function auth(){
+  return jwt.sign({}, `${process.env.auth}`);
+}
+// console.log(auth())
+export const errorResponse = { error: 'You are Not allowed!' };
 
-function validateRoute(req:Request, res:Response, next:NextFunction){
-  const key: string | undefined = req.cookies.key
-  const hKey = req.headers['x-api-key'];
+function validateRoute( req:Request, res:Response, next:NextFunction ){
+  const Keyref = `${process.env.refKey}`;
+  const Authref = `${process.env.refAuth}`
+  const reqKey = req.headers['x-api-key'];
+  const auth = req.headers.authorization;
 
-  if( typeof key === 'string' && typeof hKey === 'string' ){
-    if( key === hKey ){
-      const verify = jwt.verify(key, `${process.env.key}`)
-      if( verify ){
-        next()
-      }else{
-        res.status(401).json({ error:'You are Not allowed!'})
-      }
-    }
+  if( reqKey === Keyref && auth === Authref ){
+    jwt.verify( reqKey, `${process.env.key}` );
+    jwt.verify( auth, `${process.env.auth}` );
+    next();
   }else{
-    res.status(401).json({ error:'You are Not allowed!'})
+    res.status(401).json( errorResponse );
   }
 }
 

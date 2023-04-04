@@ -13,7 +13,7 @@ function ConnectDb() {
         mongoose_1.default.connect(connectKey);
     }
     catch (error) {
-        console.warn(error);
+        console.warn(error, 'DataBase Connection Error!');
     }
 }
 exports.default = ConnectDb;
