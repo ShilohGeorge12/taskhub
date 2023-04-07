@@ -13,6 +13,15 @@ ProjectRoutes.get('/projects', index_4.default, (0, index_2.tryCatch)(async (req
     const projects = await index_1.default.find().sort({ name: 1 }).select('_id name description progress target task');
     res.status(200).json(projects);
 }));
+ProjectRoutes.get('/projects/:id', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
+    const projects = await index_1.default.findOne({ _id: req.params.id }).select('_id name description progress target task createdAt');
+    if (projects) {
+        res.status(200).json(projects);
+    }
+    else {
+        res.status(404).json({ error: "Project Not Found!" });
+    }
+}));
 ProjectRoutes.post('/projects', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
     const { error } = (0, index_3.validateProjects)(req.body);
     if (error) {
@@ -52,7 +61,7 @@ ProjectRoutes.put('/projects/:id', index_4.default, (0, index_2.tryCatch)(async 
         res.status(200).json(updateProjects);
     }
     else {
-        res.status(200).json({ error: "Project Not Found!" });
+        res.status(404).json({ error: "Project Not Found!" });
     }
 }));
 ProjectRoutes.delete('/projects/:id', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
@@ -63,7 +72,7 @@ ProjectRoutes.delete('/projects/:id', index_4.default, (0, index_2.tryCatch)(asy
         res.status(200).json({ message: 'Project Deleted!' });
     }
     else {
-        res.status(400).json({ error: "Project Not found!" });
+        res.status(404).json({ error: "Project Not found!" });
     }
     ;
 }));

@@ -11,6 +11,15 @@ ProjectRoutes.get('/projects', validateRoute, tryCatch( async( req,res ) => {
   res.status(200).json(projects);
 }))
 
+ProjectRoutes.get('/projects/:id', validateRoute, tryCatch( async( req,res ) => {
+  const projects = await Projects.findOne({ _id:req.params.id }).select('_id name description progress target task createdAt');
+  if( projects ){
+    res.status(200).json(projects);
+  }else{
+    res.status(404).json({ error: "Project Not Found!" });
+  }
+}))
+
 ProjectRoutes.post('/projects', validateRoute, tryCatch( async( req,res ) => {
   const { error } = validateProjects( req.body );
   if( error ){
@@ -49,7 +58,7 @@ ProjectRoutes.put( '/projects/:id', validateRoute, tryCatch( async(req,res) => {
     await updateProjects.save();
     res.status(200).json(updateProjects);
   }else{
-    res.status(200).json({ error: "Project Not Found!" });
+    res.status(404).json({ error: "Project Not Found!" });
   }
 }))
 
@@ -60,7 +69,7 @@ ProjectRoutes.delete( '/projects/:id', validateRoute , tryCatch( async(req,res) 
     console.log( project );
     res.status(200).json({ message: 'Project Deleted!' });
   }else{
-    res.status(400).json({ error: "Project Not found!" });
+    res.status(404).json({ error: "Project Not found!" });
   };
 }))
 
