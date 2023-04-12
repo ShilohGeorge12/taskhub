@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 config()
+import multer from 'multer';
 import { join } from 'path';
 import { Errorhandler } from './Middlewares/Error/index';
 import ConnectDb from './DB/index';
