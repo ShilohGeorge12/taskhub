@@ -1,11 +1,13 @@
 import { Router } from "express";
-import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt';
 import multer from "multer";
 import validateRoute from "../../Middlewares/Auth/index";
 import { tryCatch } from "../../Middlewares/Error/index";
 import User from "../../Model/User/index";
 import { validateUser } from "../../Validator/index";
-import fs from 'fs'
+import fs from 'fs';
+import { config } from "dotenv";
+config()
 
 const userRoutes = Router();
 const storage = multer.diskStorage({
@@ -21,14 +23,13 @@ const upload = multer({ storage: storage });
 
 
 userRoutes.get('/admin', validateRoute, tryCatch(async(req,res) => {
-  // const hash = jwt.sign('', 'shilohgeorge18');
-  const admin = await User.findOne().select('_id username email isLoggin image profilepic ')
+  const admin = await User.findOne().select('_id username email isloggin image ')
   if( admin ){
     res.status(200).json(admin);
   }
 }));
 
-userRoutes.post('/editaccount', upload.single('image'), tryCatch(async(req,res) => {
+userRoutes.post('/editaccount', validateRoute, upload.single('image'), tryCatch(async(req,res) => {
   const { error } = validateUser(req.body)
   if( error ){
     console.log( error );
@@ -49,37 +50,34 @@ userRoutes.post('/editaccount', upload.single('image'), tryCatch(async(req,res) 
       user.email = req.body.email;
       await user.save();
       
-      console.log(req.body)
-      res.status(201)
-      .json(user)
-      // .json({
-      //   imageUrl: `data:${req.file.mimetype};base64,${base64String}`,
-      // });
+      res.status(201).json(user)
     }
   }
 }));
 
-// userRoutes.post('/editaccount', upload.single('image'), tryCatch(async(req,res) => {
-//   const hash = jwt.sign('', 'shilohgeorge18');
-
-//   console.log( 'file -> ',req.file )
-//   const user = await User.create({
-//     username: 'Shiloh George',
-//     email: 'shilohgeorge2019@gmail.com',
-//     pasword: hash,
-//     isloggin: false,
-//     image: {
-//       data: fs.readFileSync( "dist/Uploads/" + req.file?.filename ),
-//       contentType: req.file?.mimetype,
-//     }
-//   })
-  
-//   await user.save();
-//   res.status(201).json({ message: 'success' });
-// }))
-
 userRoutes.put('/login', validateRoute, tryCatch(async(req,res) => {
+  const admin = await User.findOne().select('_id username email isloggin image password ');
+  if( admin ){
 
+    const verify = await bcrypt.compare( req.body.password, admin.password );
+    
+    if( verify && req.body.username === admin.username ){
+      admin.isloggin = true;
+      await admin.save();
+      res.status(200).json( admin );
+    }else{
+      res.status( 400 ).json({ error: 'username or password is invalid' });
+    }
+  }
 }));
+
+userRoutes.get('/logout', validateRoute, tryCatch(async(req,res) => {
+  const admin = await User.findOne().select('_id username email isloggin image password ');
+  if( admin ){
+    admin.isloggin = false;
+    await admin.save();
+    res.status(200).json( admin );
+  }
+}))
 
 export default userRoutes;

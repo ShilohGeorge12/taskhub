@@ -14,7 +14,6 @@ const User = (0, mongoose_1.model)('users', new mongoose_1.Schema({
     password: {
         type: String,
         minlength: 20,
-        maxlength: 1024,
     },
     isloggin: {
         type: Boolean,

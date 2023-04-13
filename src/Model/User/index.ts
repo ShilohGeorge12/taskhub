@@ -24,7 +24,6 @@ const User = model<Iuser>('users', new Schema<Iuser>({
   password: {
     type: String, 
     minlength: 20,
-    maxlength: 1024,
   },
   isloggin: {
     type: Boolean,
