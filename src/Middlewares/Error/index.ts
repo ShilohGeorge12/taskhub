@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { errorResponse } from '../Auth/index';
+import ImageError from './Custom/index';
 
 type Ttrycatch = (req: Request, res: Response, next: NextFunction ) => Promise<void>
 
@@ -12,6 +13,10 @@ export function Errorhandler(err: Error, req: Request, res: Response, next: Next
 
   if( err.name === 'JsonWebTokenError'){
     return res.status(401).json(errorResponse)
+  }
+
+  if( err instanceof ImageError ){
+    return res.status(400).json({ error: err.message })
   }
 
   return res.status(500).json({ error: err.message })

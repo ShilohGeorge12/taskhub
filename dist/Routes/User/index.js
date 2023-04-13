@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const multer_1 = __importDefault(require("multer"));
 const index_1 = __importDefault(require("../../Middlewares/Auth/index"));
 const index_2 = require("../../Middlewares/Error/index");
 const index_3 = __importDefault(require("../../Model/User/index"));
@@ -13,23 +12,15 @@ const index_4 = require("../../Validator/index");
 const fs_1 = __importDefault(require("fs"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
+const index_5 = __importDefault(require("../../Middlewares/Image/index"));
 const userRoutes = (0, express_1.Router)();
-const storage = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'dist/Uploads');
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    }
-});
-const upload = (0, multer_1.default)({ storage: storage });
 userRoutes.get('/admin', index_1.default, (0, index_2.tryCatch)(async (req, res) => {
     const admin = await index_3.default.findOne().select('_id username email isloggin image ');
     if (admin) {
         res.status(200).json(admin);
     }
 }));
-userRoutes.post('/editaccount', index_1.default, upload.single('image'), (0, index_2.tryCatch)(async (req, res) => {
+userRoutes.post('/editaccount', index_1.default, index_5.default.single('image'), (0, index_2.tryCatch)(async (req, res) => {
     var _a, _b;
     const { error } = (0, index_4.validateUser)(req.body);
     if (error) {

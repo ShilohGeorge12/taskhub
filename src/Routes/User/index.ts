@@ -1,6 +1,5 @@
 import { Router } from "express";
 import bcrypt from 'bcrypt';
-import multer from "multer";
 import validateRoute from "../../Middlewares/Auth/index";
 import { tryCatch } from "../../Middlewares/Error/index";
 import User from "../../Model/User/index";
@@ -8,19 +7,9 @@ import { validateUser } from "../../Validator/index";
 import fs from 'fs';
 import { config } from "dotenv";
 config()
+import upload from "../../Middlewares/Image/index";
 
 const userRoutes = Router();
-const storage = multer.diskStorage({
-  destination: ( req, file, cb ) => {
-    cb( null, 'dist/Uploads' )
-  },
-  filename: ( req, file, cb ) => {
-    cb( null, file.originalname )
-  }
-});
-
-const upload = multer({ storage: storage });
-
 
 userRoutes.get('/admin', validateRoute, tryCatch(async(req,res) => {
   const admin = await User.findOne().select('_id username email isloggin image ')
