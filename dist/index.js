@@ -20,6 +20,9 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.static((0, path_1.join)(__dirname, 'public')));
 (0, index_2.default)();
+app.get('/', (0, index_1.tryCatch)(async (req, res) => {
+    res.sendFile((0, path_1.join)(__dirname, 'public/index.html'));
+}));
 app.use('/api', index_3.default);
 app.use('/api', index_4.default);
 app.use('*', index_1.Errorhandler);

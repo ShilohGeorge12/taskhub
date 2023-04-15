@@ -39,7 +39,7 @@ ProjectRoutes.post('/projects', index_4.default, (0, index_2.tryCatch)(async (re
             progress: 0,
         });
         await addProject.save();
-        res.status(200).json(addProject);
+        res.status(201).json(addProject);
     }
 }));
 ProjectRoutes.put('/projects/:id', index_4.default, (0, index_2.tryCatch)(async (req, res) => {

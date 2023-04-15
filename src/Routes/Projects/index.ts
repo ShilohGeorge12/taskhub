@@ -36,7 +36,7 @@ ProjectRoutes.post('/projects', validateRoute, tryCatch( async( req,res ) => {
       progress: 0,
     })
     await addProject.save();
-    res.status(200).json(addProject);
+    res.status(201).json(addProject);
   }
 }))
 
