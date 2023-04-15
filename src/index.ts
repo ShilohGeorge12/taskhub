@@ -3,7 +3,6 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 config()
-import { join } from 'path';
 import { Errorhandler, tryCatch } from './Middlewares/Error/index';
 import ConnectDb from './DB/index';
 import ProjectRoutes from './Routes/Projects/index';
@@ -15,11 +14,10 @@ const port = `${process.env.PORT}`;
 app.use(cookieParser())
 app.use(cors());
 app.use(express.json());
-app.use(express.static(join(__dirname, 'public')));
 
 ConnectDb();
 app.get('/', tryCatch(async( req,res ) => {
-  res.sendFile(join(__dirname,'public/index.html'));
+  res.send('Welcome To Taskhub Api')
 }))
 app.use('/api', ProjectRoutes);
 app.use('/api', userRoutes);
