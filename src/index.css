@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.active{
+  @apply bg-blue-600 text-white hover:bg-blue-600 dark:bg-slate-500 dark:hover:bg-slate-500 !important
+}
