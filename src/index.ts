@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
-config();
+config(); 
 import { Errorhandler, tryCatch } from './Middlewares/Error/index';
 import ConnectDb from './DB/index';
 import ProjectRoutes from './Routes/Projects/index';
