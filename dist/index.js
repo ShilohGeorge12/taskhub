@@ -24,4 +24,4 @@ app.get('/', (0, index_1.tryCatch)(async (req, res) => {
 app.use('/api', index_3.default);
 app.use('/api', index_4.default);
 app.use('*', index_1.Errorhandler);
-app.listen(port, () => console.log('listening...'));
+app.listen(port, () => console.log('taskhub api listening...'));

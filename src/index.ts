@@ -20,6 +20,7 @@ ConnectDb();
 app.get('/', tryCatch(async( req,res ) => {
   res.send('Welcome To Taskhub Api')
 }))
+
 app.use('/api', ProjectRoutes);
 app.use('/api', userRoutes);
 
