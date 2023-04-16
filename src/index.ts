@@ -16,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 ConnectDb();
+
 app.get('/', tryCatch(async( req,res ) => {
   res.send('Welcome To Taskhub Api')
 }))
@@ -24,4 +25,4 @@ app.use('/api', userRoutes);
 
 app.use('*', Errorhandler);
 
-app.listen(port, () => console.log('listening...'));
+app.listen(port, () => console.log('taskhub api listening...'));
