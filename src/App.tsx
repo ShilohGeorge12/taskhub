@@ -43,25 +43,25 @@ function App() {
 
 	useEffect(() => {
 		dispatch({ type: 'themeState', payload: { theme: theme } });
-		Fetch('projects', 'GET')
-			.then((data: Iprojects[] | { error: string }) => {
-				if ('error' in data) {
-					Notifications('Fetch Error', data.error);
-				} else {
-					setProjects(data);
-				}
-			})
-			.catch((err: Error) => Notifications('Fetch Error', JSON.stringify(err.message)));
-		Fetch('admin', 'GET')
-			.then((data: Iadmin | { error: string }) => {
-				if ('error' in data) {
-					Notifications('Fetch Error', data.error);
-				} else {
-					console.log( data )
-					dispatch({ type: 'admin', payload: { admin: data } })
-				}
-			})
-			.catch((err: Error) => Notifications('Fetch Error', JSON.stringify(err.message)));
+		Fetch('https://taskhub-api.onrender.com/api/projects', 'GET')
+		.then((data: Iprojects[] | { error: string }) => {
+			if ('error' in data) {
+				Notifications('Fetch Error', data.error);
+			} else {
+				setProjects(data);
+			}
+		})
+		.catch((err: Error) => Notifications('Fetch Error', JSON.stringify(err.message)));
+		Fetch('https://taskhub-api.onrender.com/api/admin', 'GET')
+		.then((data: Iadmin | { error: string }) => {
+			if ('error' in data) {
+				Notifications('Fetch Error', data.error);
+			} else {
+				console.log( data )
+				dispatch({ type: 'admin', payload: { admin: data } })
+			}
+		})
+		.catch((err: Error) => Notifications('Fetch Error', JSON.stringify(err.message)));
 	}, []);
 
 	return (
