@@ -26,7 +26,7 @@ function NavBar(props: INavprops) {
 	const buttonBg = 'dark:bg-gray-800 font-bold dark:text-white hover:bg-blue-600 hover:text-white dark:hover:bg-slate-500';
 
 	function handleLogout(){
-    Fetch('logout', 'GET')
+    Fetch('https://taskhub-api.onrender.com/api/logout', 'GET')
     .then( ( res: Iadmin ) => dispatch({ type: 'admin', payload: { admin: res } }) )
     .catch((err: Error) => Notifications('Logout Error', JSON.stringify(err.message)) );
   };

@@ -42,7 +42,7 @@ function Home(props: IhandleProjectProps) {
   const Navi = (e: MouseEvent<HTMLButtonElement>, id: string) => naviTo(`/project/${id}SSvc44cq`);
 
   function handleDelete(e: MouseEvent<HTMLButtonElement>, id: string){
-    Fetch(`projects/${id}`, 'DELETE')
+    Fetch(`https://taskhub-api.onrender.com/api/projects/${id}`, 'DELETE')
     .then( (data: { message: string }| { error: string } ) => {
       if( 'error' in data  ){
         Notifications( "Fetch Error", data.error );
@@ -52,7 +52,7 @@ function Home(props: IhandleProjectProps) {
     })
     .catch( ( err: Error ) => Notifications( 'Error While Deleting', err.message ) );
 
-    Fetch( 'projects', 'GET' )
+    Fetch( 'https://taskhub-api.onrender.com/api/projects', 'GET' )
     .then( ( res: Iprojects[] ) => setProjects(res) )
     .catch( ( err: Error ) => Notifications( 'Error While Deleting', err.message ) );
   };

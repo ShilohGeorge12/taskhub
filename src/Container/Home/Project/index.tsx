@@ -98,7 +98,7 @@ function Project({ setProjects }: IProjectProps ) {
 				target: Project.target,
 				task: newTask,
 			};
-			Fetch(`projects/${validId}`, 'PUT', toSend)
+			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'PUT', toSend)
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -108,7 +108,7 @@ function Project({ setProjects }: IProjectProps ) {
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
 
-			Fetch(`projects/${validId}`, 'GET')
+			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'GET')
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -117,7 +117,7 @@ function Project({ setProjects }: IProjectProps ) {
 					}
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
-			Fetch(`projects`, 'GET')
+			Fetch(`https://taskhub-api.onrender.com/api/projects`, 'GET')
 				.then((data: Iprojects[] | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);

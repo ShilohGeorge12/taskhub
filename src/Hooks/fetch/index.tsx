@@ -1,7 +1,7 @@
 
 type Tmethod = 'POST'| 'GET'| 'DELETE'| 'PUT';
 
-type TRequestApi =  ( endpoint: string, method: Tmethod, body?: unknown ) => Promise<any>
+type TRequestApi =  ( url: string, method: Tmethod, body?: unknown ) => Promise<any>
 
 interface Ioptions{
   method: Tmethod;
@@ -9,7 +9,7 @@ interface Ioptions{
   body?: string,
 }
 
-const Fetch: TRequestApi = async (endpoint, method, body ) =>  {
+const Fetch: TRequestApi = async (url, method, body ) =>  {
 
   const authKey = `${import.meta.env.VITE_authKey}`;
   const apiKey = `${import.meta.env.VITE_apiKey}`;
@@ -27,8 +27,6 @@ const Fetch: TRequestApi = async (endpoint, method, body ) =>  {
   if( method === 'POST' || method === 'PUT' ){
     options.body = JSON.stringify(body)
   }
-
-  const url = `https://taskhub-api.onrender.com/api/${endpoint}`;
 
   const req = new Request(url, options);
   const Response = await fetch(req);

@@ -16,7 +16,7 @@ function Login() {
 
 	function handleSubmit(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    Fetch('login', 'PUT', loginVal)
+    Fetch('https://taskhub-api.onrender.com/api/login', 'PUT', loginVal)
     .then( ( res: Iadmin | { error: string } ) => {
       if( 'error' in res ){
         Notifications('Login Error', res.error )

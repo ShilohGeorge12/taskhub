@@ -48,7 +48,7 @@ const handleNewTask = (e: ChangeEvent<HTMLTextAreaElement>) => setNewTasks(e.tar
 				target: Project.target,
 				task: Task,
 			}
-			Fetch(`projects/${validId}`, 'PUT', toSend)
+			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'PUT', toSend)
 			.then((data: Iprojects | { error: string }) => {
 				if ('error' in data) {
 					Notifications('Fetch Error', data.error);
@@ -58,7 +58,7 @@ const handleNewTask = (e: ChangeEvent<HTMLTextAreaElement>) => setNewTasks(e.tar
 			})
 			.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
 
-			Fetch(`projects/${validId}`, 'GET')
+			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'GET')
 			.then((data: Iprojects | { error: string }) => {
 				if ('error' in data) {
 					Notifications('Fetch Error', data.error);

@@ -7,7 +7,6 @@ import useContextApi from "../../../../Context";
 import { Iadmin } from "../../../../Context/interface";
 import Fetch from "../../../../Hooks/fetch";
 import Notifications from "../../../../Hooks/Notifications";
-import avater from '../../../../assets/Images/man.png';
 
 function EditProfile() {
 
@@ -23,15 +22,6 @@ function EditProfile() {
       setInputVal({ ...inputVal, profilePic: e.target.files[0]})
     }
   };
-
-  function convertToBase64(file: Blob){
-    return new Promise<string | null | ArrayBuffer>((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => resolve(fileReader.result);
-      fileReader.onerror = (error) => reject(error)
-    })
-  };
   
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => setInputVal( prevState => ({ ...prevState, [e.target.id]: e.target.value}) )
   
@@ -45,7 +35,7 @@ function EditProfile() {
       data.append('email', inputVal.email)
       data.append('username', inputVal.username)
 
-      fetch('editaccount', {
+      fetch('https://taskhub-api.onrender.com/api/editaccount', {
         method: 'POST',
         body: data,
         headers: {
@@ -62,7 +52,7 @@ function EditProfile() {
     })
     .catch( ( err: Error ) => Notifications( 'Error While Updating Account', err.message ) );
 
-    Fetch('admin', 'GET')
+    Fetch('https://taskhub-api.onrender.com/api/admin', 'GET')
     .then( ( response: Iadmin | { error: string } ) => {
       if( 'error' in response ){
         Notifications( "Fetch Error", response.error );
