@@ -53,7 +53,6 @@ function EditProfile() {
           'Authorization': authKey
         }
       })
-    // Fetch('http://localhost:4550/api/editaccount', 'POST', result )
     .then( res => res.json())
     .then( ( response: any | { error: string } ) => {
       if( 'error' in response ){

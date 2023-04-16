@@ -43,7 +43,7 @@ function App() {
 
 	useEffect(() => {
 		dispatch({ type: 'themeState', payload: { theme: theme } });
-		Fetch('/projects', 'GET')
+		Fetch('projects', 'GET')
 			.then((data: Iprojects[] | { error: string }) => {
 				if ('error' in data) {
 					Notifications('Fetch Error', data.error);
@@ -52,7 +52,7 @@ function App() {
 				}
 			})
 			.catch((err: Error) => Notifications('Fetch Error', JSON.stringify(err.message)));
-		Fetch('/admin', 'GET')
+		Fetch('admin', 'GET')
 			.then((data: Iadmin | { error: string }) => {
 				if ('error' in data) {
 					Notifications('Fetch Error', data.error);

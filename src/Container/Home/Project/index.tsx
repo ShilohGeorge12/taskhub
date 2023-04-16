@@ -98,7 +98,7 @@ function Project({ setProjects }: IProjectProps ) {
 				target: Project.target,
 				task: newTask,
 			};
-			Fetch(`http://localhost:4550/api/projects/${validId}`, 'PUT', toSend)
+			Fetch(`projects/${validId}`, 'PUT', toSend)
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -108,7 +108,7 @@ function Project({ setProjects }: IProjectProps ) {
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
 
-			Fetch(`http://localhost:4550/api/projects/${validId}`, 'GET')
+			Fetch(`projects/${validId}`, 'GET')
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -117,7 +117,7 @@ function Project({ setProjects }: IProjectProps ) {
 					}
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
-			Fetch(`http://localhost:4550/api/projects`, 'GET')
+			Fetch(`projects`, 'GET')
 				.then((data: Iprojects[] | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
