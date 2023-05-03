@@ -9,10 +9,10 @@ import { Iadmin } from "../../Context/interface";
 
 function SideBar() {
   const { state, dispatch } = useContextApi()
-  const navStyle = 'p-2 rounded-xl capitalize md:text-3xl sm:text-2xl hover:bg-blue-300 hover:text-white hover:dark:bg-slate-900 dark:text-white'
+  const navStyle = 'p-2 rounded-xl capitalize text-xl md:text-3xl sm:text-2xl hover:bg-blue-300 hover:text-white hover:dark:bg-slate-900 dark:text-white'
 
   function handleLogout(){
-    Fetch('/api/logout', 'GET')
+    Fetch('api/logout', 'GET')
     .then( ( res: Iadmin ) => dispatch({ type: 'admin', payload: { admin: res } }) )
     .catch((err: Error) => Notifications('Logout Error', JSON.stringify(err.message)) );
   };
@@ -21,7 +21,6 @@ function SideBar() {
     if( state.admin.isloggin ){
       return path;
     }
-    Notifications( 'User Not logged In', 'Redirected Back To Home Page!' );
     return '/';
   };
 
@@ -40,7 +39,7 @@ function SideBar() {
   };
 
   return (
-    <nav id="sidebar" className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center w-16 sm:w-20 h-[85vh] gap-3">
+    <nav id="sidebar" className="flex flex-row sm:flex-col items-center justify-center w-full sm:w-20 sm:h-[85vh] gap-3">
       {
         state.addProject || state.addTask || state.editAccount ? (
           <>

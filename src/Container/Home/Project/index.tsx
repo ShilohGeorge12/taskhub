@@ -17,8 +17,9 @@ function Project({ setProjects }: IProjectProps ) {
 	const [Project, setProject] = useState<Iprojects | null>(null);
 	const params = useParams();
 	const validId = params.id?.split('S')[0];
+
 	useEffect(() => {
-		Fetch(`projects/${validId}`, 'GET')
+		Fetch(`api/projects/${validId}`, 'GET')
 			.then((data: Iprojects | { error: string }) => {
 				if ('error' in data) {
 					Notifications('Fetch Error', data.error);
@@ -29,7 +30,7 @@ function Project({ setProjects }: IProjectProps ) {
 			.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
 	}, []);
 
-	const handleTaskCompleted = (e: MouseEvent<HTMLButtonElement>, id: number) => {
+	const handleTaskCompleted = async (e: MouseEvent<HTMLButtonElement>, id: number) => {
 		e.preventDefault();
 		if (Project) {
 			const completedTask = Project.task[id];
@@ -48,7 +49,7 @@ function Project({ setProjects }: IProjectProps ) {
 				target: Project.target,
 				task: Project.task,
 			};
-			Fetch(`projects/${validId}`, 'PUT', toSend)
+			await Fetch(`api/projects/${validId}`, 'PUT', toSend)
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -58,7 +59,7 @@ function Project({ setProjects }: IProjectProps ) {
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
 
-			Fetch(`projects/${validId}`, 'GET')
+			await Fetch(`api/projects/${validId}`, 'GET')
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -67,7 +68,8 @@ function Project({ setProjects }: IProjectProps ) {
 					}
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
-			Fetch(`projects`, 'GET')
+
+			await Fetch(`api/projects`, 'GET')
 				.then((data: Iprojects[] | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -79,7 +81,7 @@ function Project({ setProjects }: IProjectProps ) {
 		}
 	};
 
-	const handleDeleteTask = (e: MouseEvent<HTMLButtonElement>, id: number) => {
+	const handleDeleteTask = async (e: MouseEvent<HTMLButtonElement>, id: number) => {
 		if (Project) {
 			const remainingTask = Project.task.filter((project, i) => i !== id);
 			const newTaskPoints = Math.round(100 / remainingTask.length);
@@ -98,7 +100,8 @@ function Project({ setProjects }: IProjectProps ) {
 				target: Project.target,
 				task: newTask,
 			};
-			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'PUT', toSend)
+			// Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'PUT', toSend)
+			await Fetch(`api/projects/${validId}`, 'PUT', toSend)
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -108,7 +111,8 @@ function Project({ setProjects }: IProjectProps ) {
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
 
-			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'GET')
+			// Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'GET')
+			await Fetch(`api/projects/${validId}`, 'GET')
 				.then((data: Iprojects | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -117,7 +121,8 @@ function Project({ setProjects }: IProjectProps ) {
 					}
 				})
 				.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
-			Fetch(`https://taskhub-api.onrender.com/api/projects`, 'GET')
+			// Fetch(`https://taskhub-api.onrender.com/api/projects`, 'GET')
+				await Fetch('api/projects', 'GET')
 				.then((data: Iprojects[] | { error: string }) => {
 					if ('error' in data) {
 						Notifications('Fetch Error', data.error);
@@ -194,7 +199,7 @@ function Project({ setProjects }: IProjectProps ) {
 				</>
 			)}
 			{ state.addTask && ( 
-					<AddTask Project={ Project } setProject={ setProject } validId={validId} /> 
+					<AddTask Project={ Project } setProject={ setProject } setProjects={ setProjects } validId={validId} /> 
 			) }
 		</section>
 	);

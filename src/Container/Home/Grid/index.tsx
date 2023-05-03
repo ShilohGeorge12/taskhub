@@ -1,9 +1,11 @@
 import Button from "../../../Components/Buttons";
 import { BiInfoCircle, BiTrashAlt, BiCheckCircle } from 'react-icons/bi';
-import { IhandleProjectProps } from "..";
-import { MouseEvent } from "react";
+import { Dispatch, MouseEvent, SetStateAction } from "react";
+import { Iprojects } from "../../../App";
 
-interface IgridProps extends IhandleProjectProps{
+interface IgridProps{
+  projects: Iprojects[];
+  setProjects: Dispatch<SetStateAction<Iprojects[]>>
   backColor: (string[])[];
   handleDelete: (e: MouseEvent<HTMLButtonElement>, id: string) => void;
   Navi: (e: MouseEvent<HTMLButtonElement>, id: string) => void;

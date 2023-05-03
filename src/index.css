@@ -5,3 +5,31 @@
 .active{
   @apply bg-blue-600 text-white hover:bg-blue-600 dark:bg-slate-500 dark:hover:bg-slate-500 !important
 }
+
+.spinner {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
+
+.spinner:after {
+  content: " ";
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #868585 transparent #7a7979 transparent;
+  animation: spinner 1.2s linear infinite;
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* <div class="spinner"></div> */

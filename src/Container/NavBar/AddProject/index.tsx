@@ -30,7 +30,7 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 		setNewproject((prevState) => ({ ...prevState, task: e.target.value }));
 	}
 
-	function handleSubmit(e: MouseEvent<HTMLButtonElement>) {
+	async function handleSubmit(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
 
 		let arr = newproject.task.split('\n');
@@ -49,7 +49,8 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 			target: `${newproject.target} Days`,
 			task: newarr,
 		};
-		Fetch('https://taskhub-api.onrender.com/api/projects', 'POST', result)
+		// Fetch('https://taskhub-api.onrender.com/api/projects', 'POST', result)
+		await Fetch('api/projects', 'POST', result)
 			.then((data: Iprojects[] | { error: string }) => {
 				if ('error' in data) {
 					Notifications('new Project Error!', data.error);
@@ -59,7 +60,8 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 			})
 			.catch((err: Error) => Notifications('new Project Error!', err.message));
 
-		Fetch('https://taskhub-api.onrender.com/api/projects', 'GET')
+		// Fetch('https://taskhub-api.onrender.com/api/projects', 'GET')
+		await Fetch('api/projects', 'GET')
 			.then((data) => setProjects(data))
 			.catch((err) => Notifications('Fetch Error', JSON.stringify(err.message)));
 
@@ -69,7 +71,7 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 
 	return createPortal(
 		<section className={`${state.theme}`}>
-			<form className='w-4/5 md:w-3/5 lg:w-1/2 h-3/5 absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 dark:bg-slate-600 rounded-3xl p-3 shadow-2xl'>
+			<form className='w-4/5 md:w-3/5 lmd:w-9/12 lg:w-1/2 h-5/6 md:h-2/4 lmd:h-3/4 lg:h-4/6 absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 dark:bg-slate-600 rounded-3xl p-3 shadow-2xl'>
 				<div className='relative flex items-center justify-center'>
 					<p className=' dark:text-white font-bold text-3xl tracking-wider'>New Project</p>
 					<Button
@@ -80,7 +82,7 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 						modal
 					/>
 				</div>
-				<div className='flex flex-col w-11/12 mx-auto pt-5 gap-4 md:gap-2'>
+				<div className='flex flex-col w-11/12 mx-auto pt-5 gap-4 md:gap-3'>
 					<Input
 						id={'name'}
 						type={'text'}

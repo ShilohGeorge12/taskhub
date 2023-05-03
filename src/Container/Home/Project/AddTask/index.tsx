@@ -11,15 +11,16 @@ interface IaddTask{
 	validId?: string,
 	Project: Iprojects | null;
 	setProject: Dispatch<SetStateAction<Iprojects | null>>;
+	setProjects: Dispatch<SetStateAction<Iprojects[]>>
 }
 
-function AddTask( { Project, setProject, validId }: IaddTask ) {
+function AddTask( { Project, setProject, validId, setProjects }: IaddTask ) {
 	const { state, dispatch } = useContextApi();
 	const [newTasks, setNewTasks] = useState('');
 
 const handleNewTask = (e: ChangeEvent<HTMLTextAreaElement>) => setNewTasks(e.target.value);
 
-	function handleSubmit(){
+	async function handleSubmit(){
 		if( Project ){
 		let arr = newTasks.split('\n');
 		const len = arr.length + Project.task.length;
@@ -48,7 +49,8 @@ const handleNewTask = (e: ChangeEvent<HTMLTextAreaElement>) => setNewTasks(e.tar
 				target: Project.target,
 				task: Task,
 			}
-			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'PUT', toSend)
+			// Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'PUT', toSend)
+			await Fetch(`api/projects/${validId}`, 'PUT', toSend)
 			.then((data: Iprojects | { error: string }) => {
 				if ('error' in data) {
 					Notifications('Fetch Error', data.error);
@@ -58,12 +60,23 @@ const handleNewTask = (e: ChangeEvent<HTMLTextAreaElement>) => setNewTasks(e.tar
 			})
 			.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
 
-			Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'GET')
+			// Fetch(`https://taskhub-api.onrender.com/api/projects/${validId}`, 'GET')
+			await Fetch(`api/projects/${validId}`, 'GET')
 			.then((data: Iprojects | { error: string }) => {
 				if ('error' in data) {
 					Notifications('Fetch Error', data.error);
 				} else {
 					setProject(data);
+				}
+			})
+			.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));
+
+			await Fetch(`api/projects`, 'GET')
+			.then((data: Iprojects[] | { error: string }) => {
+				if ('error' in data) {
+					Notifications('Fetch Error', data.error);
+				} else {
+					setProjects(data)
 				}
 			})
 			.catch((err: Error) => Notifications('Error While Fetching Project Details', err.message));

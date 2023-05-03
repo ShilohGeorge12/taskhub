@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense, ChangeEvent } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SuspenseUi from './Components/SuspenseUi';
+import Fetch from './Hooks/fetch';
+import Auth from './Auth';
+import useContextApi from './Context';
+import { Iadmin } from './Context/interface';
 import Home from './Container/Home';
 import NavBar from './Container/NavBar/Index';
 import SideBar from './Container/SideBar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Settings from './Container/Settings';
-import Statictics from './Container/Statictics';
-import Fetch from './Hooks/fetch';
-import useContextApi from './Context';
-import Notifications from './Hooks/Notifications';
+const Project = lazy( () => import('./Container/Home/Project'));
+const Statictics = lazy( ()=> import('./Container/Statictics'));
+const Settings = lazy( ()=> import('./Container/Settings'));
+const Account = lazy( () => import('./Container/Settings/Account'));
 import Login from './Container/Login';
-import Project from './Container/Home/Project';
 import NotFound from './Container/NotFound';
+import Notifications from './Hooks/Notifications';
 import ErrorBoundary from './Error';
-import Account from './Container/Settings/Account';
-import { Iadmin } from './Context/interface';
-import Auth from './Auth';
+import Search, { BSearch } from './Hooks/Search';
 
 export interface Iprojects {
 	readonly _id: string;
@@ -29,6 +31,8 @@ export interface Iprojects {
 function App() {
 	const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 	const [projects, setProjects] = useState<Iprojects[]>([]);
+	const [searchQuery, setSearchQuery] = useState<string>('');
+  const [result, setResult] = useState<Iprojects[] | 'Not Found!' | BSearch>('Not Found!');
 	const { state, dispatch } = useContextApi();
 
 	function changeTheme() {
@@ -41,9 +45,16 @@ function App() {
 		}
 	}
 
+	const handleSearchQuery = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery( e.target.value )
+    setResult( () => Search( projects, e.target.value ));
+  };
+
+
 	useEffect(() => {
 		dispatch({ type: 'themeState', payload: { theme: theme } });
-		Fetch('https://taskhub-api.onrender.com/api/projects', 'GET')
+		// Fetch('https://taskhub-api.onrender.com/api/projects', 'GET')
+		Fetch('api/projects', 'GET')
 		.then((data: Iprojects[] | { error: string }) => {
 			if ('error' in data) {
 				Notifications('Fetch Error', data.error);
@@ -52,12 +63,12 @@ function App() {
 			}
 		})
 		.catch((err: Error) => Notifications('Fetch Error', JSON.stringify(err.message)));
-		Fetch('https://taskhub-api.onrender.com/api/admin', 'GET')
+		// Fetch('https://taskhub-api.onrender.com/api/admin', 'GET')
+		Fetch('api/admin', 'GET')
 		.then((data: Iadmin | { error: string }) => {
 			if ('error' in data) {
 				Notifications('Fetch Error', data.error);
 			} else {
-				console.log( data )
 				dispatch({ type: 'admin', payload: { admin: data } })
 			}
 		})
@@ -69,14 +80,17 @@ function App() {
 			<div className='bg-slate-100 dark:bg-gray-800 min-h-screen text-gray-800 dark:text-white'>
 				<Router>
 					<NavBar
-						changeTheme={changeTheme}
-						setProjects={setProjects}
+						changeTheme={ changeTheme }
+						setProjects={ setProjects }
+						projects={ projects }
+						searchQuery={ searchQuery }
+						handleSearchQuery={ handleSearchQuery }
 					/>
-					<section className='flex flex-row w-full'>
+					<section className='flex flex-col-reverse sm:flex-row w-full'>
 						<SideBar />
 						<main
 							id='home'
-							className='w-full bg-white dark:bg-gray-700 h-[95vh] rounded-[35px] p-6 mx-1'>
+							className='w-full bg-white dark:bg-gray-700 h-[84vh] rounded-[35px] p-6'>
 							<Routes>
 								<Route
 									path='/'
@@ -85,6 +99,8 @@ function App() {
 											<Home
 												projects={projects}
 												setProjects={setProjects}
+												result={ result }
+												searchQuery={ searchQuery }
 											/>
 										</ErrorBoundary>
 									}
@@ -95,7 +111,9 @@ function App() {
 										path='/project/:id'
 										element={
 											<ErrorBoundary>
-												<Project setProjects={setProjects} />
+												<Suspense fallback={<SuspenseUi />}>
+													<Project setProjects={setProjects} />
+												</Suspense>
 											</ErrorBoundary>
 										}
 									/>
@@ -104,7 +122,9 @@ function App() {
 										path='/statictics'
 										element={
 											<ErrorBoundary>
-												<Statictics projects={projects} />
+												<Suspense fallback={<SuspenseUi />}>
+													<Statictics projects={projects} />
+												</Suspense>
 											</ErrorBoundary>
 										}
 									/>
@@ -113,7 +133,9 @@ function App() {
 										path='/settings'
 										element={
 											<ErrorBoundary>
-												<Settings />
+												<Suspense fallback={<SuspenseUi />}>
+													<Settings />
+												</Suspense>
 											</ErrorBoundary>
 										}
 									/>
@@ -122,7 +144,9 @@ function App() {
 										path='/settings/account'
 										element={
 											<ErrorBoundary>
-												<Account />
+												<Suspense fallback={<SuspenseUi />}>
+													<Account />
+												</Suspense>
 											</ErrorBoundary>
 										}
 									/>

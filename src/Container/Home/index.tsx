@@ -1,20 +1,24 @@
 import Button from '../../Components/Buttons';
 import { BiListUl, BiGridAlt } from 'react-icons/bi';
 import Grid from './Grid';
-import { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
-import List from './List';
+import { Dispatch, MouseEvent, SetStateAction, lazy, Suspense, useState, useEffect } from 'react';
+const List = lazy( () => import('./List'));
 import { Iprojects } from '../../App';
 import Fetch from '../../Hooks/fetch';
 import Notifications from '../../Hooks/Notifications';
 import { useNavigate } from 'react-router-dom';
+import SuspenseUi from '../../Components/SuspenseUi';
+import { BSearch } from '../../Hooks/Search';
 
 export interface IhandleProjectProps{
-  projects: Iprojects[] | [];
+  projects: Iprojects[];
   setProjects: Dispatch<SetStateAction<Iprojects[]>>
+  result: Iprojects[] | 'Not Found!' | BSearch;
+  searchQuery: string;
 }
 
 function Home(props: IhandleProjectProps) {
-  const { projects, setProjects } = props;
+  const { projects, setProjects, result, searchQuery } = props;
   const [view, setView] = useState<'grid'|'list'>('grid');
 
   const getDate = () => {
@@ -41,8 +45,9 @@ function Home(props: IhandleProjectProps) {
   const naviTo = useNavigate()
   const Navi = (e: MouseEvent<HTMLButtonElement>, id: string) => naviTo(`/project/${id}SSvc44cq`);
 
-  function handleDelete(e: MouseEvent<HTMLButtonElement>, id: string){
-    Fetch(`https://taskhub-api.onrender.com/api/projects/${id}`, 'DELETE')
+  async function handleDelete(e: MouseEvent<HTMLButtonElement>, id: string){
+    // Fetch(`https://taskhub-api.onrender.com/api/projects/${id}`, 'DELETE')
+    await Fetch(`api/projects/${id}`, 'DELETE')
     .then( (data: { message: string }| { error: string } ) => {
       if( 'error' in data  ){
         Notifications( "Fetch Error", data.error );
@@ -52,7 +57,8 @@ function Home(props: IhandleProjectProps) {
     })
     .catch( ( err: Error ) => Notifications( 'Error While Deleting', err.message ) );
 
-    Fetch( 'https://taskhub-api.onrender.com/api/projects', 'GET' )
+    // Fetch( 'https://taskhub-api.onrender.com/api/projects', 'GET' )
+    await Fetch('api/projects', 'GET')
     .then( ( res: Iprojects[] ) => setProjects(res) )
     .catch( ( err: Error ) => Notifications( 'Error While Deleting', err.message ) );
   };
@@ -84,9 +90,39 @@ function Home(props: IhandleProjectProps) {
         </div>
       </section>
       {
-        view === 'grid' ? 
-        ( <Grid projects={projects} setProjects={setProjects}  backColor={backColor} handleDelete={handleDelete} Navi={Navi} /> ) :
-        ( <List projects={projects} setProjects={setProjects} backColor={backColor} handleDelete={handleDelete} Navi={Navi} /> )
+        view === 'grid' && searchQuery === '' && ( 
+        <Grid
+          projects={projects}
+          setProjects={setProjects}
+          backColor={backColor}
+          handleDelete={handleDelete}
+          Navi={Navi} 
+        /> 
+        )
+      }
+      {
+        view === 'list' && searchQuery === '' && ( 
+        <Suspense fallback={ <SuspenseUi/> }>
+          <List
+            projects={projects}
+            setProjects={setProjects}
+            backColor={backColor}
+            handleDelete={handleDelete}
+            Navi={Navi}
+          />
+        </Suspense> 
+        )
+      }
+      {
+        searchQuery !== '' && result !== 'Not Found!' && typeof result !== 'function' && (
+          <Grid
+            projects={ result }
+            setProjects={setProjects}
+            backColor={backColor}
+            handleDelete={handleDelete}
+            Navi={Navi} 
+          />
+        )
       }
     </main>
   );
