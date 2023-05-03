@@ -7,7 +7,7 @@ export interface Iuser {
   isloggin: boolean,
   image: {
     data: any,
-    contentType: string
+    contentType: string;
   },
 }
 

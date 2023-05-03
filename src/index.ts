@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 config(); 
 import { Errorhandler, tryCatch } from './Middlewares/Error/index';
 import ConnectDb from './DB/index';
-import ProjectRoutes from './Routes/Projects/index';
+import ProjectRoutes from './Routes/Projects';
 import userRoutes from './Routes/User/index';
 
 const app = express();
@@ -18,7 +18,7 @@ app.use(express.json());
 ConnectDb();
 
 app.get('/', tryCatch(async( req,res ) => {
-  res.send('Welcome To Taskhub Api')
+  res.send('Welcome To Taskhub Api');
 }))
 
 app.use('/api', ProjectRoutes);

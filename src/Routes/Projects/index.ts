@@ -7,7 +7,8 @@ import validateRoute from "../../Middlewares/Auth/index";
 const ProjectRoutes = Router();
 
 ProjectRoutes.get('/projects', validateRoute, tryCatch( async( req,res ) => {
-  const projects = await Projects.find().sort({ name: 1 }).select('_id name description progress target task')
+  const projects = await Projects.find().sort({ name: 1 }).select('_id name description progress target task');
+  console.log( projects );
   res.status(200).json(projects);
 }))
 

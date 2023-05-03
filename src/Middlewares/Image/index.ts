@@ -3,10 +3,10 @@ import ImageError from "../Error/Custom/index";
 
 const storage = multer.diskStorage({
   destination: ( req, file, cb ) => {
-    cb( null, 'dist/Uploads' )
+    cb( null, 'dist/Uploads' );
   },
   filename: ( req, file, cb ) => {
-    cb( null, file.originalname )
+    cb( null, file.originalname );
   }
 });
 
