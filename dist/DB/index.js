@@ -10,7 +10,11 @@ function ConnectDb() {
     try {
         const connectKey = `${process.env.DB_CONNECT}`;
         mongoose_1.default.set('strictQuery', false);
-        mongoose_1.default.connect(connectKey);
+        mongoose_1.default.connect(connectKey, {
+            writeConcern: {
+                w: 'majority'
+            }
+        });
     }
     catch (error) {
         console.warn(error, 'DataBase Connection Error!');
