@@ -49,7 +49,6 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 			target: `${newproject.target} Days`,
 			task: newarr,
 		};
-		// Fetch('https://taskhub-api.onrender.com/api/projects', 'POST', result)
 		await Fetch('api/projects', 'POST', result)
 			.then((data: Iprojects[] | { error: string }) => {
 				if ('error' in data) {
@@ -60,7 +59,6 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 			})
 			.catch((err: Error) => Notifications('new Project Error!', err.message));
 
-		// Fetch('https://taskhub-api.onrender.com/api/projects', 'GET')
 		await Fetch('api/projects', 'GET')
 			.then((data) => setProjects(data))
 			.catch((err) => Notifications('Fetch Error', JSON.stringify(err.message)));

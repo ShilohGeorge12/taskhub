@@ -46,7 +46,6 @@ function Home(props: IhandleProjectProps) {
   const Navi = (e: MouseEvent<HTMLButtonElement>, id: string) => naviTo(`/project/${id}SSvc44cq`);
 
   async function handleDelete(e: MouseEvent<HTMLButtonElement>, id: string){
-    // Fetch(`https://taskhub-api.onrender.com/api/projects/${id}`, 'DELETE')
     await Fetch(`api/projects/${id}`, 'DELETE')
     .then( (data: { message: string }| { error: string } ) => {
       if( 'error' in data  ){
@@ -57,7 +56,6 @@ function Home(props: IhandleProjectProps) {
     })
     .catch( ( err: Error ) => Notifications( 'Error While Deleting', err.message ) );
 
-    // Fetch( 'https://taskhub-api.onrender.com/api/projects', 'GET' )
     await Fetch('api/projects', 'GET')
     .then( ( res: Iprojects[] ) => setProjects(res) )
     .catch( ( err: Error ) => Notifications( 'Error While Deleting', err.message ) );

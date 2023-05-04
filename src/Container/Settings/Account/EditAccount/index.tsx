@@ -35,8 +35,7 @@ function EditProfile() {
       data.append('email', inputVal.email)
       data.append('username', inputVal.username)
 
-      // fetch('https://taskhub-api.onrender.com/api/editaccount', {
-      fetch('http://localhost:1550/api/editaccount', {
+      fetch('https://taskhub-api.onrender.com/api/editaccount', {
         method: 'POST',
         body: data,
         headers: {
@@ -53,7 +52,6 @@ function EditProfile() {
     })
     .catch( ( err: Error ) => Notifications( 'Error While Updating Account', err.message ) );
 
-    // Fetch('https://taskhub-api.onrender.com/api/admin', 'GET')
     Fetch('api/admin', 'GET')
     .then( ( response: Iadmin | { error: string } ) => {
       if( 'error' in response ){

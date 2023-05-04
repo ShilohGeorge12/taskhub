@@ -53,7 +53,6 @@ function App() {
 
 	useEffect(() => {
 		dispatch({ type: 'themeState', payload: { theme: theme } });
-		// Fetch('https://taskhub-api.onrender.com/api/projects', 'GET')
 		Fetch('api/projects', 'GET')
 		.then((data: Iprojects[] | { error: string }) => {
 			if ('error' in data) {
@@ -63,7 +62,6 @@ function App() {
 			}
 		})
 		.catch((err: Error) => Notifications('Fetch Error', JSON.stringify(err.message)));
-		// Fetch('https://taskhub-api.onrender.com/api/admin', 'GET')
 		Fetch('api/admin', 'GET')
 		.then((data: Iadmin | { error: string }) => {
 			if ('error' in data) {
