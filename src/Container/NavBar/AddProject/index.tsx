@@ -7,6 +7,8 @@ import Notifications from '../../../Hooks/Notifications';
 import { Iprojects } from '../../../App';
 import { createPortal } from 'react-dom';
 import { BiXCircle } from 'react-icons/bi';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 type Tstate = {
 	name: string;
@@ -75,7 +77,7 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 					<Button
 						Value={BiXCircle}
 						bg={'bg-red-500'}
-						more={'text-white text-3xl p-1 rounded-xl absolute top-0 right-2'}
+						more={'text-white text-3xl p-0 md:p-1 rounded-[50%] absolute top-0 right-1'}
 						onClick={() => dispatch({ type: 'addProject', payload: { addProject: false } })}
 						modal
 					/>

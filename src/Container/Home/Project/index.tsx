@@ -7,6 +7,7 @@ import Notifications from '../../../Hooks/Notifications';
 import { Iprojects } from '../../../App';
 import useContextApi from '../../../Context';
 import AddTask from './AddTask';
+import SuspenseUi from '../../../Components/SuspenseUi';
 
 interface IProjectProps{
 	setProjects: Dispatch<SetStateAction<Iprojects[]>>
@@ -143,7 +144,10 @@ function Project({ setProjects }: IProjectProps ) {
 
 	return (
 		<section className='flex flex-col gap-3'>
-			{Project && (
+			{
+				Project === null && ( <SuspenseUi /> )
+			}
+			{ Project && (
 				<>
 					<h1 className='text-center text-2xl font-bold'>{Project.name}</h1>
 					<h2 className='text-center text-xl font-semibold'>{Project.description}</h2>
