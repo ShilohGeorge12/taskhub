@@ -28,12 +28,12 @@ function SideBar() {
     if( state.admin.isloggin ){
       return <Button
         Value={ FiLogOut }
-        bg={ 'p-2 mt-2 rounded-md capitalize md:text-2xl bg-blue-600 hover:text-white dark:text-white' }
+        bg={ 'p-2 mt-2 rounded-md capitalize md:text-2xl bg-blue-600 text-white dark:text-white' }
         onClick={ handleLogout }
       />
     }
     return <Link to={'/login'}
-      className={ 'p-2 mt-2 rounded-md capitalize md:text-2xl bg-blue-600 hover:text-white dark:text-white' }
+      className={ 'p-2 mt-2 rounded-md capitalize md:text-2xl bg-blue-600 text-white dark:text-white' }
       > <FiLogIn/> 
     </Link>
   };

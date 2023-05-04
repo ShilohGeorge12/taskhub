@@ -23,7 +23,7 @@ function Statictics({ projects }: IStats) {
   return (
     <section className="flex flex-col items-center justify-center ">
       <h1 className="text-3xl">Total Project: {totalprojects}</h1>
-      <div className="w-full sm:w-2/3 md:w-3/5 lg:w-[35%] border-red-600 border-2">
+      <div className="w-full sm:w-2/3 md:w-3/5 lg:w-[35%]">
         <PieChart data={data} />
       </div>
     </section>
