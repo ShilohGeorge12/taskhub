@@ -18,11 +18,14 @@ function Grid(props: IgridProps) {
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 overflow-y-scroll">
       { projects && Array.isArray(projects) && projects.map( ( project, index) => {
       let i = index % backColor.length;
-      const date = new Date(project.createdAt);
-        return (
+      const createdAt = new Date(project.createdAt).toLocaleString('en-US', { weekday: 'short', day: 'numeric' });
+      const [weekday, day] = createdAt.toLowerCase().split(' ');
+      console.log( project.createdAt )
+      const target = new Date(project.target).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '/');
+      return (
           <div key={project._id} style={{ background: backColor[i][0] }} className={'w-full flex flex-col rounded-3xl p-3 text-slate-700'}>
             <section className="grid grid-cols-2 items-center w-full">
-              <p className="justify-self-start capitalize font-medium text-xl">{ "date" }</p>
+              <p className="justify-self-start capitalize font-medium text-xl">{ weekday } { day }</p>
               <Button Value={ BiInfoCircle } more='text-3xl p-1' bg='justify-self-end' styles={{ color: backColor[i][1] }} onClick={(e)=> Navi(e, project._id)} />
             </section>
             <section className="flex flex-col items-center justify-center mt-1">
@@ -37,7 +40,12 @@ function Grid(props: IgridProps) {
               <p className="self-end font-bold text-lg">{ project.progress }%</p>
             </section>
             <section className="grid grid-cols-3 place-items-center">
-              <Button Value={ project.target } bg={''} more={'p-1 px-2 text-xl'} styles={{ background: backColor[i][1], color: backColor[i][0] }} />
+              <Button 
+                Value={ target }
+                bg={''}
+                more={'p-1 px-2 text-xl'}
+                styles={{ background: backColor[i][1], color: backColor[i][0] }}
+              />
               {
                 project.progress > 96.5 ? 
                 (<Button Value={ BiCheckCircle } bg={''} more={'p-1 px-2 text-2xl'} styles={{color: backColor[i][1]}} />) :

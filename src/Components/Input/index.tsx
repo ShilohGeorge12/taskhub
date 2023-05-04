@@ -16,7 +16,7 @@ function Input(props: Iinput) {
 		<input
 			type={ type }
       id={ id }
-			className={`rounded-xl h-12 md:h-10 text-gray-600 placeholder:text-gray-500 placeholder:text-lg text-xl font-semibold dark:focus:outline-slate-500 hover:border-gray-500 px-2 ${more}`}
+			className={`rounded-xl h-12 md:h-10 text-gray-600 placeholder:text-gray-500 placeholder:text-lg text-xl font-semibold px-2 dark:focus:border-2 dark:focus:border-blue-400 shadow-sm outline-none  ${more}`}
       value={ value }
       onChange={ onChange }
 			placeholder={ placeholder }

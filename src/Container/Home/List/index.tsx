@@ -20,6 +20,7 @@ function List(props: IlistProps) {
       {
         projects && Array.isArray(projects) && projects.map( (project, index) => {
           let i = index % backColor.length;
+          const date = new Date(project.target).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '/')
           return (
             <section key={project._id} style={{ background: backColor[i][0] }} className="flex rounded-lg w-full gap-2 p-2 text-slate-700">
               <div className="w-1/5">
@@ -27,7 +28,7 @@ function List(props: IlistProps) {
                 <div className="capitalize whitespace-nowrap overflow-hidden text-ellipsis">{ project.description }</div>
                 <div style={{ background: backColor[0][1], color: backColor[i][0] }}
                   className="px-1 text-xl text-center rounded-lg whitespace-nowrap overflow-hidden text-ellipsis"
-                  >{ project.target }
+                  >{ date }
                 </div>
               </div>
               <div className="w-1/2 md:w-3/5 lg:w-3/4 flex flex-col gap-1 items-center">

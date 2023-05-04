@@ -13,18 +13,23 @@ import 'react-datepicker/dist/react-datepicker.css';
 type Tstate = {
 	name: string;
 	description: string;
-	target: string;
+	target: Date | null;
 	task: string;
 };
 
 function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Iprojects[]>> }) {
 	const { dispatch, state } = useContextApi();
-	const [newproject, setNewproject] = useState<Tstate>({ name: '', description: '', target: '', task: '' });
+	const [newproject, setNewproject] = useState<Tstate>({ name: '', description: '', target: null, task: '' });
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
 		e.preventDefault();
 		setNewproject((prevState) => ({ ...prevState, [e.target.id]: e.target.value }));
 	}
+
+	function handleDateChange(date: Date | null){
+		setNewproject( (p)=>({...p, target: date}) )
+		console.log( newproject.target?.toLocaleDateString() );
+	};
 
 	function handleTextArea(e: ChangeEvent<HTMLTextAreaElement>) {
 		e.preventDefault();
@@ -48,7 +53,7 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 			name: newproject.name,
 			description: newproject.description,
 			progress: 0,
-			target: `${newproject.target} Days`,
+			target: newproject.target,
 			task: newarr,
 		};
 		await Fetch('api/projects', 'POST', result)
@@ -65,7 +70,7 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 			.then((data) => setProjects(data))
 			.catch((err) => Notifications('Fetch Error', JSON.stringify(err.message)));
 
-		setNewproject({ name: '', description: '', target: '', task: '' });
+		setNewproject({ name: '', description: '', target: null, task: '' });
 		dispatch({ type: 'addProject', payload: { addProject: false } });
 	}
 
@@ -73,7 +78,7 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 		<section className={`${state.theme}`}>
 			<form className='w-4/5 md:w-3/5 lmd:w-9/12 lg:w-1/2 h-5/6 md:h-2/4 lmd:h-3/4 lg:h-4/6 absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 dark:bg-slate-600 rounded-3xl p-3 shadow-2xl'>
 				<div className='relative flex items-center justify-center'>
-					<p className=' dark:text-white font-bold text-3xl tracking-wider'>New Project</p>
+					<p className=' dark:text-white font-bold text-2xl md:text-3xl tracking-wider'>New Project</p>
 					<Button
 						Value={BiXCircle}
 						bg={'bg-red-500'}
@@ -97,19 +102,19 @@ function AddProject({ setProjects }: { setProjects: Dispatch<SetStateAction<Ipro
 						onChange={handleChange}
 						placeholder={'Project Description'}
 					/>
-					<Input
-						id={'target'}
-						type={'text'}
-						value={newproject.target}
-						onChange={handleChange}
-						placeholder={'Project Target ( Only Numbers )'}
+					<DatePicker
+						className="w-full py-2 px-2 pl-3 pr-10 rounded-xl h-12 md:h-10 text-gray-600 placeholder:text-gray-500 placeholder:text-lg text-xl font-semibold dark:focus:border-blue-400 dark:focus:border-2 shadow-sm outline-none"
+						selected={newproject.target}
+						onChange={ handleDateChange }
+						dateFormat={'dd/MM/yyyy'}
+						placeholderText={'Project Target ( Only Numbers )'}
 					/>
 					<textarea
 						id={'task'}
 						value={newproject.task}
 						onChange={handleTextArea}
 						placeholder={'Project Task ( Press Enter To Split The Task )'}
-						className='h-24 rounded-xl text-gray-600 placeholder:text-gray-500 placeholder:text-lg text-xl font-semibold dark:focus:outline-slate-500 hover:border-gray-500 px-2 '
+						className='h-24 rounded-xl text-gray-600 placeholder:text-gray-500 placeholder:text-lg text-xl font-semibold dark:focus:border-blue-400 dark:focus:border-2 shadow-sm outline-none px-2'
 					/>
 
 

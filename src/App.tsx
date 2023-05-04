@@ -23,7 +23,7 @@ export interface Iprojects {
 	name: string;
 	description: string;
 	progress: number;
-	target: string;
+	target: Date;
 	task: { completed: boolean; content: string; points: number }[];
 	createdAt: Date;
 }
