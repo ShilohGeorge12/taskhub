@@ -50,6 +50,12 @@ function App() {
     setResult( () => Search( projects, e.target.value ));
   };
 
+	useEffect( ()=> {
+		if( state.admin.isloggin === false ){
+			Notifications( 'User\'s Logged Out', 'Log In To Use Features Of The App' );
+		}
+	}, [state.admin.isloggin] )
+
 
 	useEffect(() => {
 		dispatch({ type: 'themeState', payload: { theme: theme } });
