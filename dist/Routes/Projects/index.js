@@ -10,7 +10,7 @@ const index_3 = require("../../Validator/index");
 const index_4 = __importDefault(require("../../Middlewares/Auth/index"));
 const ProjectRoutes = (0, express_1.Router)();
 ProjectRoutes.get('/projects', index_4.default, (0, index_2.tryCatch)(async (req, res) => {
-    const projects = await index_1.default.find().sort({ name: 1 }).select('_id name description progress target task');
+    const projects = await index_1.default.find().sort({ name: 1 }).select('_id name description progress target task createdAt');
     console.log(projects);
     res.status(200).json(projects);
 }));

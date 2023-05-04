@@ -10,7 +10,7 @@ function validateProjects(schema) {
         name: joi_1.default.string().min(2).required(),
         description: joi_1.default.string().min(2).max(40).required(),
         progress: joi_1.default.number().min(0).max(100),
-        target: joi_1.default.string().min(1).required(),
+        target: joi_1.default.date().required(),
         task: joi_1.default.array().required()
     });
     return joiSchema.validate(schema, { abortEarly: false });

@@ -4,7 +4,7 @@ export interface IProjects {
   name: string,
   description: string,
   progress?: number,
-  target: string,
+  target: Date,
   task: (unknown)[],
   createdAt?: Date,
 }
@@ -28,8 +28,7 @@ const Projects = model('projects', new Schema<IProjects>({
     max: 100,
   },
   target: {
-    type: String,
-    minLenght: 1,
+    type: Date,
     required: true,
   },
   task: {
@@ -38,7 +37,7 @@ const Projects = model('projects', new Schema<IProjects>({
   },
   createdAt: {
     type: Date,
-    default: () => Date.now(),
+    default: () => new Date(),
   }
 }))
 

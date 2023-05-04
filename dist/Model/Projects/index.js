@@ -20,8 +20,7 @@ const Projects = (0, mongoose_1.model)('projects', new mongoose_1.Schema({
         max: 100,
     },
     target: {
-        type: String,
-        minLenght: 1,
+        type: Date,
         required: true,
     },
     task: {
@@ -30,7 +29,7 @@ const Projects = (0, mongoose_1.model)('projects', new mongoose_1.Schema({
     },
     createdAt: {
         type: Date,
-        default: () => Date.now(),
+        default: () => new Date(),
     }
 }));
 exports.default = Projects;

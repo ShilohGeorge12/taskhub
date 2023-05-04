@@ -6,7 +6,7 @@ export function validateProjects(schema: Request){
     name: joi.string().min(2).required(),
     description: joi.string().min(2).max(40).required(),
     progress: joi.number().min(0).max(100),
-    target: joi.string().min(1).required(),
+    target: joi.date().required(),
     task: joi.array().required()
   })
 
