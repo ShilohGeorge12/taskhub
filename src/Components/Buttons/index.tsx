@@ -30,7 +30,6 @@ function Button(props: IbuttonProps) {
 		return true
 	};
 
-
 	return (
 		<>
 			{

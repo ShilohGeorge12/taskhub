@@ -6,10 +6,12 @@ import Notifications from "../../Hooks/Notifications";
 import Button from "../../Components/Buttons";
 import Fetch from "../../Hooks/fetch";
 import { Iadmin } from "../../Context/interface";
+import { useState } from "react";
 
 function SideBar() {
   const { state, dispatch } = useContextApi()
-  const navStyle = 'p-2 rounded-xl capitalize text-xl md:text-3xl sm:text-2xl hover:bg-blue-300 hover:text-white hover:dark:bg-slate-900 dark:text-white'
+  const [isBouncing, setIsBouncing] = useState<boolean>(false);
+  const navStyle = `p-2 rounded-xl capitalize text-xl md:text-3xl sm:text-2xl hover:bg-blue-300 hover:text-white hover:dark:bg-slate-900 dark:text-white ${isBouncing ? 'animate-bounce' : ''}`
 
   function handleLogout(){
     Fetch('api/logout', 'GET')
@@ -38,6 +40,13 @@ function SideBar() {
     </Link>
   };
 
+  const handleBouceAnimation = () => { 
+    setIsBouncing(true);
+    setTimeout(() => {
+      setIsBouncing(false);
+    }, 500);
+  }
+
   return (
     <nav id="sidebar" className="flex flex-row sm:flex-col items-center justify-center w-full sm:w-20 sm:h-[85vh] gap-3">
       {
@@ -49,8 +58,8 @@ function SideBar() {
           </>
         ) : (
           <>
-            <NavLink to={ isDisabled('/') } className={navStyle}> <BiHome /> </NavLink>
-            <NavLink to={ isDisabled('/statictics') } className={navStyle} > <BiChart />  </NavLink>
+            <NavLink to={ isDisabled('/') } className={navStyle} onClick={ handleBouceAnimation } > <BiHome /> </NavLink>
+            <NavLink to={ isDisabled('/statictics') } className={navStyle} onClick={ handleBouceAnimation } > <BiChart />  </NavLink>
             <NavLink to={ isDisabled('/settings') } className={navStyle}> <FiSettings /> </NavLink>
             {
               logInOrOut()
