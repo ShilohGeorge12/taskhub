@@ -12,7 +12,7 @@ const PieChart = ({ data }: any) => {
       colorScale={ [ '#e19f5c', '#5d56bb' ] }
       style={{
         labels: {
-          fill: ({ datum }: any) => (datum.status === 'completed' ? '#e19f5c': '#e8e7fd'),
+          fill: '#e8e7fd',
         },
       }}
     />
